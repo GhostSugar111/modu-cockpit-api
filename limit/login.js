@@ -7,7 +7,7 @@ const joi = require("joi");
 //patten() 代表正则验证
 
 //对账号的验证
-const account = joi.string().alphanum().min(6).max(12).required();
+const account = joi.string().alphanum().min(5).max(12).required();
 //对密码的验证
 const password = joi
   .string()

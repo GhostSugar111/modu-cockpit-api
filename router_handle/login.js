@@ -32,7 +32,7 @@ exports.register = (req, res) => {
     //使用中间件bcrypt.js对密码进行加密
     reginfo.password = bcrypt.hashSync(reginfo.password, 10); //一参是要加密的密码，二参是加密的长度
     //把账号密码插入到数据库中
-    const sql = `insert into users set ?`;
+    const sql = "insert into users set ?";
     //注册身份
     const identity = "用户";
     //创建时间
@@ -42,17 +42,19 @@ exports.register = (req, res) => {
       {
         account: reginfo.account,
         password: reginfo.password,
-        identity,
-        create_time,
+        identity: identity,
+        create_time: create_time,
         status: 0,
       },
       (err, results) => {
+        // console.log(results);
         //插入失败
         //affectedRows是影响的行数
-        if (results.affectedRows !== 1) {
+        if (err || results.affectedRows !== 1) {
+          console.log(err);
           return res.send({
             status: 1,
-            message: "注册账号失败!",
+            message: "注册账号失败！",
           });
         }
         return res.send({
@@ -93,6 +95,7 @@ exports.login = (req, res) => {
       expiresIn: "10h",
     });
     res.send({
+      code: 200,
       results: results[0],
       status: 0,
       message: "登录成功！",
