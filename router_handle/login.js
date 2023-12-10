@@ -73,13 +73,13 @@ exports.login = (req, res) => {
     //查询失败
     if (err) return res.cc(err);
     //查询成功，但是查询结果为空
-    if (results.length !== 1) return res.cc("登录失败！");
+    if (results.length !== 1) return res.cc("用户名或密码错误！");
     //判断密码是否正确
     const compareResult = bcrypt.compareSync(
       logininfo.password,
       results[0].password
     ); //一参是用户输入的密码，二参是数据库中的密码
-    if (!compareResult) return res.cc("登录失败！");
+    if (!compareResult) return res.cc("用户名或密码错误！");
     //对账号是否冻结进行判断
     if (results[0].status == 1) return res.cc("账号已被冻结，请联系管理员！");
     //登录成功，生成token
